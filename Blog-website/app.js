@@ -10,7 +10,7 @@ const posts = [];
 const app = express();
 const mongoose = require('mongoose');
 
-mongoose.connect(process.env.connectionURL, {useNewUrlParser: true});
+mongoose.connect(process.env.connectionURL, {useNewUrlParser: true, useUnifiedTopology: true,});
 
 const postSchema = new mongoose.Schema({
     title: String,
