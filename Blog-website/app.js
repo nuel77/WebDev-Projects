@@ -1,3 +1,4 @@
+require('dotenv').config();
 const express = require("express");
 const bodyParser = require("body-parser");
 const ejs = require("ejs");
@@ -9,13 +10,13 @@ const posts = [];
 const app = express();
 const mongoose = require('mongoose');
 
-mongoose.connect("mongodb+srv://admin-emmanuel:9495112289@pebble-wkn0j.mongodb.net/exampleBlog", {useNewUrlParser: true});
+mongoose.connect(process.env.connectionURL, {useNewUrlParser: true});
 
 const postSchema = new mongoose.Schema({
     title: String,
     body: String,
 });
-const Post = mongoose.model("post", postSchema);
+const Post = mongoose.model("post", postSchema); //will create a posts (plural) collection in the database with the given schema
 
 app.set('view engine', 'ejs');
 app.use(bodyParser.urlencoded({extended: true}));
@@ -53,6 +54,7 @@ app.post('/newpost', (req, res) => {
         title: req.body.postTitle,
         body: req.body.postBody
     });
+    //saving the Post to mongodb atlas
     newPost.save(function (err) {
         if (!err) {
             res.redirect("/");
