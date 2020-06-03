@@ -10,7 +10,7 @@ class App extends Component {
 
   getExcercisesByMuscles() {
     /*
-    Object.entries is ES8 fucntion to convert Object returned by reduce method to an array 
+    Object.entries is ES8 fucntion to convert Object returned by reduce method to an wrapper array 
     where each element is an array with the first element as key and second element as the value
     of the Object
     */
@@ -32,10 +32,11 @@ class App extends Component {
     );
   }
   render() {
+    const excercisesByMuscle= this.getExcercisesByMuscles()
     return (
       <Fragment>
         <Header></Header>
-        <Exercise />
+        <Exercise excercises={excercisesByMuscle} />
         <Footer muscles={muscles}></Footer>
       </Fragment>
     );
