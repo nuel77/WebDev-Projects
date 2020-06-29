@@ -1,23 +1,49 @@
 import Hidden from "@material-ui/core/Hidden";
 import Drawer from "@material-ui/core/Drawer";
-import React from "react";
+import React, {useState} from "react";
 import useStyles from "./styles";
 import Divider from "@material-ui/core/Divider";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
-import ListItemText from "@material-ui/core/ListItemText";
+import {Typography,TextField,} from "@material-ui/core";
+import {Fab,IconButton } from "@material-ui/core";
+import AddIcon from '@material-ui/icons/Add';
+import DeleteIcon from '@material-ui/icons/Delete';
 
 const SideBar = (props) => {
     const classes = useStyles();
-
+    const [addInput,setAddInput]=useState("")
+    const [categoryList,setCategoryList]=useState(["GENERAL"])
+    const handleAddCategory=()=>{
+        let newCategoryList=[...categoryList,addInput]
+        setCategoryList(newCategoryList)
+        setAddInput("")
+    }
+    const handleChange=(event)=>{
+        let input=event.target.value
+        setAddInput(input)
+    }
     const drawer = (
         <div>
             <div className={classes.toolbar} />
             <Divider />
             <List>
-                {["General", "Starred", "Send email", "Drafts"].map((text) => (
+                <ListItem >
+                    <TextField label="ADD NEW" onChange={handleChange} />
+                    <Fab size="small" color="secondary" aria-label="add">
+                        <AddIcon
+                        onClick={handleAddCategory}
+                        />
+                    </Fab>
+                </ListItem>
+                {categoryList.map((text) => (
                     <ListItem button key={text}>
-                        <ListItemText primary={text} />
+                        <Typography variant="subtitle1" style={{flexGrow:1}}>
+                            {text.toUpperCase()}
+                        </Typography>
+                        <IconButton  aria-label="delete">
+                            <DeleteIcon />
+                        </IconButton>
                     </ListItem>
                 ))}
             </List>
