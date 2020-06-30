@@ -5,9 +5,13 @@ import Typography from "@material-ui/core/Typography";
 import AppBar from "@material-ui/core/AppBar";
 import React from "react";
 import useStyles from "./styles.jsx";
+import AccountCircle from '@material-ui/icons/AccountCircle';
+import {useSelector} from "react-redux";
 
 const Header=(props)=>{
     const classes= useStyles()
+    const title=useSelector(state=>state.ui.selected)
+
     return(
         <AppBar position="fixed" className={classes.appBar}>
             <Toolbar>
@@ -23,6 +27,12 @@ const Header=(props)=>{
                 <Typography variant="h6" noWrap>
                     Website Pinner!
                 </Typography>
+                <Typography variant="subtitle1" id="categoryTitle" className={classes.title} >
+                    {title}
+                </Typography>
+                <IconButton edge="end" color="inherit">
+                    <AccountCircle />
+                </IconButton>
             </Toolbar>
         </AppBar>
     )

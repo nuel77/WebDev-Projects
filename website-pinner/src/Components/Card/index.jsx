@@ -35,7 +35,7 @@ export default function MediaCard(props) {
       </CardActionArea>
       <CardActions>
         <Button size="small" color="primary">
-          Open
+          Copy
         </Button>
         <Button size="small" color="secondary">
           Delete
