@@ -15,15 +15,15 @@ import * as actionTypes from "../../Store/actionTypes"
 
 const SideBar = (props) => {
     const classes = useStyles();
+    const [addInput,setAddInput]=useState("")
     const [categoryList, setCategoryList] = useState([])
     const dispatch = useDispatch()
 
-    const handleAddCategory = () => {
-        let addInput = document.getElementById("categoryInput")
-        if (addInput.value) {
-            let newCategoryList = [...categoryList, addInput.value]
+    const handleAddCategoryClick = () => {
+        if (addInput) {
+            let newCategoryList = [...categoryList, addInput]
             setCategoryList(newCategoryList)
-            addInput.value = ""
+            setAddInput("")
         }
     }
     const handleCategoryClick = (event) => {
@@ -39,8 +39,8 @@ const SideBar = (props) => {
             <Divider/>
             <List>
                 <ListItem>
-                    <TextField label="NEW CATEGORY" id="categoryInput"/>
-                    <Fab size="small" color="secondary" onClick={handleAddCategory}>
+                    <TextField label="NEW CATEGORY" id="categoryInput" onChange={e => {setAddInput(e.target.value)}}/>
+                    <Fab size="small" color="secondary" onClick={handleAddCategoryClick}>
                         <AddIcon/>
                     </Fab>
                 </ListItem>
@@ -76,9 +76,6 @@ const SideBar = (props) => {
                     onClose={props.handleDrawerToggle}
                     classes={{
                         paper: classes.drawerPaper,
-                    }}
-                    ModalProps={{
-                        keepMounted: true, // Better open performance on mobile.
                     }}
                 >
                     {drawer}
