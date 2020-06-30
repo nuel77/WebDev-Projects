@@ -10,6 +10,7 @@ import SendIcon from '@material-ui/icons/Send';
 import {useSelector, useDispatch} from 'react-redux'
 import * as actionTypes from "../../Store/actionTypes"
 
+//TODO:add inputs should have single source of truth
 const Layout = (props) => {
     const {window} = props;
     const [mobileOpen, setMobileOpen] = React.useState(false);

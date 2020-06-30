@@ -1,6 +1,6 @@
 import Hidden from "@material-ui/core/Hidden";
 import Drawer from "@material-ui/core/Drawer";
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import useStyles from "./styles";
 import Divider from "@material-ui/core/Divider";
 import List from "@material-ui/core/List";
@@ -39,16 +39,16 @@ const SideBar = (props) => {
             <Divider/>
             <List>
                 <ListItem>
-                    <TextField label="NEW CATEGORY" id="categoryInput" onChange={e => {setAddInput(e.target.value)}}/>
+                    <TextField label="NEW CATEGORY"  value={addInput} onChange={e => {setAddInput(e.target.value)}}/>
                     <Fab size="small" color="secondary" onClick={handleAddCategoryClick}>
                         <AddIcon/>
                     </Fab>
                 </ListItem>
                 {/*-------------*/}
-                <ListItem button>
+                <ListItem button onClick={homeCategorySelect}>
                     <Box display="flex" justifyContent="center" alignItems="center" px={4} py={2}>
                         <ListItemIcon><HomeIcon/></ListItemIcon>
-                        <ListItemText primary="HOME" onClick={homeCategorySelect}/>
+                        <ListItemText primary="HOME" />
                     </Box>
                 </ListItem>
                 <Divider/>
