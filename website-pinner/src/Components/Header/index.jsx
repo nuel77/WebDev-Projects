@@ -2,17 +2,36 @@ import Toolbar from "@material-ui/core/Toolbar";
 import IconButton from "@material-ui/core/IconButton";
 import MenuIcon from "@material-ui/icons/Menu";
 import Typography from "@material-ui/core/Typography";
-import {AppBar, Button, InputBase} from "@material-ui/core";
+import {AppBar, InputBase} from "@material-ui/core";
 import React from "react";
 import useStyles from "./styles.jsx";
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import SearchIcon from '@material-ui/icons/Search';
-import {useSelector} from "react-redux";
+import {useSelector, useDispatch} from "react-redux";
+import {useGoogleLogout} from 'react-google-login'
+import * as actionTypes from "../../Store/actionTypes"
+
 
 const Header = (props) => {
     const classes = useStyles()
     const title = useSelector(state => state.ui.selected)
+    const dispatch = useDispatch()
 
+    const {signOut, loaded} = useGoogleLogout({
+        jsSrc: "https://apis.google.com/js/api.js",
+        onFailure: () => {
+            console.log("Failed to logout")
+        },
+        clientId: "513756828470-4dndgt7608ql784k15n3b5htme6domeg.apps.googleusercontent.com",
+        cookiePolicy: 'single_host_origin',
+        onLogoutSuccess: () => {
+            console.log("logout success")
+            dispatch({type: actionTypes.LOGOUT})
+        }
+    })
+    const handleChange=(el)=>{
+        console.log(el.target.value)
+    }
     return (
         <AppBar position="fixed" className={classes.appBar}>
             <Toolbar>
@@ -36,6 +55,7 @@ const Header = (props) => {
                         <SearchIcon/>
                     </div>
                     <InputBase
+                        onChange={handleChange}
                         placeholder="Search…"
                         classes={{
                             root: classes.inputRoot,
@@ -44,8 +64,8 @@ const Header = (props) => {
                         inputProps={{'aria-label': 'search'}}
                     />
                 </div>
-                <IconButton color="inherit">
-                    <ExitToAppIcon />
+                <IconButton color="inherit" onClick={signOut}>
+                    <ExitToAppIcon/>
                 </IconButton>
             </Toolbar>
         </AppBar>

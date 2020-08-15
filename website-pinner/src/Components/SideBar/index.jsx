@@ -5,19 +5,36 @@ import useStyles from "./styles";
 import Divider from "@material-ui/core/Divider";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
-import {Typography, TextField, ListItemText, ListItemIcon, Box} from "@material-ui/core";
+import { TextField, ListItemText, ListItemIcon, Box} from "@material-ui/core";
 import {Fab, IconButton} from "@material-ui/core";
 import AddIcon from '@material-ui/icons/Add';
 import DeleteIcon from '@material-ui/icons/Delete';
 import HomeIcon from '@material-ui/icons/Home';
-import {useDispatch} from 'react-redux'
+import {useDispatch, useSelector} from 'react-redux'
 import * as actionTypes from "../../Store/actionTypes"
 
 const SideBar = (props) => {
     const classes = useStyles();
-    const [addInput,setAddInput]=useState("")
+    const [addInput, setAddInput] = useState("")
     const [categoryList, setCategoryList] = useState([])
     const dispatch = useDispatch()
+    const urlList = useSelector(state => state.userData.urlDataList)
+    const loggedUser = useSelector(state => state.loggedUser)
+    const selectedCat = useSelector(state => state.ui.selected)
+
+    useEffect(() => {
+        if(urlList.length>0){
+            console.log("urlList",urlList)
+            let categories = urlList.reduce((accumulator, elem) => {
+                if (!accumulator.includes(elem.category) && elem.category!=="HOME") {
+                    accumulator.push(elem.category)
+                }
+                return accumulator
+            }, [])
+            setCategoryList(categories)
+            console.log("categories", urlList)
+        }
+    }, [urlList,loggedUser])
 
     const handleAddCategoryClick = () => {
         if (addInput) {
@@ -33,35 +50,40 @@ const SideBar = (props) => {
     const homeCategorySelect = () => {
         dispatch({type: actionTypes.SELECTED_CATEGORY, payload: "HOME"})
     }
+    const isSelected=(text)=>{
+       return text.toUpperCase()===selectedCat?classes.selectedItem:null
+    }
     const drawer = (
         <div>
             <div className={classes.toolbar}/>
             <Divider/>
             <List>
                 <ListItem>
-                    <TextField label="NEW CATEGORY"  value={addInput} onChange={e => {setAddInput(e.target.value)}}/>
+                    <TextField label="NEW CATEGORY" value={addInput} onChange={e => {
+                        setAddInput(e.target.value)
+                    }}/>
                     <Fab size="small" color="secondary" onClick={handleAddCategoryClick}>
                         <AddIcon/>
                     </Fab>
                 </ListItem>
                 {/*-------------*/}
-                <ListItem button onClick={homeCategorySelect}>
+                <ListItem button onClick={homeCategorySelect} className={isSelected("HOME")}>
                     <Box display="flex" justifyContent="center" alignItems="center" px={4} py={2}>
                         <ListItemIcon><HomeIcon/></ListItemIcon>
-                        <ListItemText primary="HOME" />
+                        <ListItemText primary="HOME"/>
                     </Box>
                 </ListItem>
                 <Divider/>
-                {categoryList.map((text) => (
+                {categoryList ? categoryList.map((text) => (
 
-                    <ListItem button key={text} onClick={handleCategoryClick}>
+                    <ListItem button key={text} onClick={handleCategoryClick} className={isSelected(text)}>
                         <ListItemText primary={text.toUpperCase()}/>
-                        <IconButton aria-label="delete">
-                            <DeleteIcon/>
-                        </IconButton>
+                        {/*<IconButton aria-label="delete">*/}
+                        {/*    <DeleteIcon/>*/}
+                        {/*</IconButton>*/}
                     </ListItem>
 
-                ))}
+                )) : null}
             </List>
         </div>
     );

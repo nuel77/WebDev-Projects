@@ -16,6 +16,8 @@ const useStyles = makeStyles((theme) => ({
         width: drawerWidth,
         background:" ",
     },
-
+    selectedItem:{
+        backgroundColor:"#F0F0F0",
+    }
 }));
 export default useStyles

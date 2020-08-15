@@ -11,7 +11,7 @@ const App = (props) => {
   return (
     <Router>
         <Switch>
-            <Route path="/app" exact  render={() => (<Layout/> )}/>
+            <Route path="/app" exact  render={(props) => (<Layout {...props}/> )}/>
             <Route path="/" exact component={Home}/>
             <Redirect to="/" />
         </Switch>
